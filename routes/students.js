@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const Student = require('../db/models/student');
 
 module.exports = router;
 
@@ -6,7 +7,11 @@ module.exports = router;
 router.get('/', async (req, res, next) => {
   try {
     const students = await Student.findAll();
-    res.send(students);
+    if (students) {
+      res.send(students);
+    } else {
+      res.status(404).send('No students');
+    }
   } catch (error) {
     next(error);
   }
@@ -51,7 +56,7 @@ router.put('/:id', async (req, res, next) => {
       returning: true,
       plain: true,
     });
-    res.send(updatedStudent([1]));
+    res.send(updatedStudent[1]);
   } catch (error) {
     next(error);
   }
